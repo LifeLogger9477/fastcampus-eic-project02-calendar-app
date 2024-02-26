@@ -1,5 +1,7 @@
 package com.example.calendarapp.event;
 
+import com.example.calendarapp.exception.InvalidEventException;
+
 import java.time.Duration;
 import java.time.ZonedDateTime;
 
@@ -29,6 +31,18 @@ public abstract class AbstractEvent implements Event {
       ZonedDateTime endAt
   ) {
 
+    // validation
+    if (startAt.isAfter(endAt)) {
+
+      throw new InvalidEventException(
+          String.format(
+              "시작일은 종료일보다 이전이어야 합니다. 시작일=%s, 종료일=%s",
+              startAt,
+              endAt
+          )
+      );
+    }
+
     this.id = id;
     this.title = title;
     this.startAt = startAt;
@@ -45,5 +59,15 @@ public abstract class AbstractEvent implements Event {
   public String getTitle() {
 
     return this.title;
+  }
+
+  public ZonedDateTime getStartAt() {
+
+    return this.startAt;
+  }
+
+  public ZonedDateTime getEndAt() {
+
+    return this.endAt;
   }
 }
