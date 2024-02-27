@@ -1,5 +1,6 @@
 package com.example.calendarapp.event;
 
+import com.example.calendarapp.event.update.AbstractAuditableEvent;
 import com.example.calendarapp.exception.InvalidEventException;
 
 import java.time.Duration;
@@ -54,6 +55,37 @@ public abstract class AbstractEvent implements Event {
     this.modifiedAt = now;
 
     this.deleteYn = false;
+  }
+
+  // 수정에 대한 method 추가
+  public void validateAndUpdate(AbstractAuditableEvent update) {
+
+    if (deleteYn == true) {
+
+      throw new RuntimeException("이미 삭제된 이벤트는 수정할 수 없음");
+    }
+
+    defaultUpdate(update);
+    update(update);
+  }
+
+  // 공통으로 update되는 method
+  private void defaultUpdate(AbstractAuditableEvent update) {
+
+    this.title = update.getTitle();
+    this.startAt = update.getStartAt();
+    this.endAt = update.getEndAt();
+    this.duration = Duration.between(this.startAt, this.endAt);
+    this.modifiedAt = ZonedDateTime.now();
+  }
+
+  // 개별로 update 되는 method
+  protected abstract void update(AbstractAuditableEvent update);
+
+  // 삭제 추가
+  public void delete(boolean deleteYn) {
+
+    this.deleteYn = deleteYn;
   }
 
   public String getTitle() {

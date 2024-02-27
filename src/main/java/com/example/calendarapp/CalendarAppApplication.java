@@ -1,6 +1,7 @@
 package com.example.calendarapp;
 
 import com.example.calendarapp.event.*;
+import com.example.calendarapp.event.update.UpdateMeeting;
 import com.example.calendarapp.reader.EventCsvReader;
 import com.opencsv.exceptions.CsvException;
 import org.springframework.boot.SpringApplication;
@@ -29,6 +30,41 @@ public class CalendarAppApplication {
     meetings.forEach(schedule::add);
 
     schedule.pringAll();
+
+    // update - before
+    Meeting meeting = meetings.get(0);
+    System.out.println("수정 전..");
+    meeting.print();
+
+    // update
+    System.out.println("수정 진행..");
+    meeting.validateAndUpdate(
+        new UpdateMeeting(
+            "new title",
+            ZonedDateTime.now(),
+            ZonedDateTime.now().plusHours(1),
+            null,
+            "Room A",
+            "new agenda"
+        )
+    );
+
+    System.out.println("수정 결과..");
+    meeting.print();
+
+    // 삭제
+    meeting.delete(true);
+    System.out.println("삭제 후 수정 시도..");
+    meeting.validateAndUpdate(
+        new UpdateMeeting(
+            "new title 2",
+            ZonedDateTime.now(),
+            ZonedDateTime.now().plusHours(1),
+            null,
+            "Room A2",
+            "new agenda2"
+        )
+    );
   }
 
 }

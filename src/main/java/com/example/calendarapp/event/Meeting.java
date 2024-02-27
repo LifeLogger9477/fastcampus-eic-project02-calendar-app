@@ -1,5 +1,8 @@
 package com.example.calendarapp.event;
 
+import com.example.calendarapp.event.update.AbstractAuditableEvent;
+import com.example.calendarapp.event.update.UpdateMeeting;
+
 import java.time.ZonedDateTime;
 import java.util.Set;
 
@@ -40,5 +43,15 @@ public class Meeting extends AbstractEvent {
   public boolean support(EventType type) {
 
     return type == EventType.MEETING;
+  }
+
+  @Override
+  protected void update(AbstractAuditableEvent update) {
+
+    UpdateMeeting meetingUpdate = (UpdateMeeting) update;
+
+    this.participants = meetingUpdate.getParticipants();
+    this.meetingRoom = meetingUpdate.getMeetingRoom();
+    this.agenda = meetingUpdate.getAgenda();
   }
 }
