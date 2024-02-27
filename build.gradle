@@ -16,6 +16,9 @@ repositories {
 }
 
 dependencies {
+
+    implementation 'com.opencsv:opencsv:5.9'
+
     implementation 'org.springframework.boot:spring-boot-starter'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
