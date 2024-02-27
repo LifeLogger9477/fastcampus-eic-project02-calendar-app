@@ -29,7 +29,7 @@ public class OutOfOffice extends AbstractEvent {
   @Override
   public void print() {
 
-
+    System.out.printf("[외출] %s\n", getTitle());
   }
 
   @Override
