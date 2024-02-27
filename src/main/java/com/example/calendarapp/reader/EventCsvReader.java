@@ -23,13 +23,20 @@ import java.util.List;
  */
 public class EventCsvReader {
 
+  private final RawCsvReader rawCsvReader;
+
+  public EventCsvReader(RawCsvReader rawCsvReader) {
+
+    this.rawCsvReader = rawCsvReader;
+  }
+
   public List<Meeting> readMeetings(String path)
       throws IOException, CsvException {
 
     List<Meeting> result = new ArrayList<>();
 
     // 데이터를 읽는 부분
-    List<String[]> read = readAll(path);  // 0 : header
+    List<String[]> read = rawCsvReader.readAll(path);
 
     for (int i = 0; i < read.size(); i++) {
 
@@ -74,6 +81,7 @@ public class EventCsvReader {
     return i == 0;
   }
 
+  /*
   private List<String[]> readAll(String path)
       throws IOException, CsvException {
 
@@ -85,4 +93,5 @@ public class EventCsvReader {
 
     return csvReader.readAll();
   }
+   */
 }
